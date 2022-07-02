@@ -4,25 +4,29 @@ def check_variable_name(var_name, lineno):
     #must be alphanumeric
     #must not be an instruction, register, label
     if (not(var_name.isalnum())):
-        print("Variable name must be alphanumeric, Error in line:", lineno)
+        print("Variable name must be alphanumeric, Error in line:", lineno+1)
     elif var_name in OPCODES.keys():
-        print("Variable name cannot be an , Error in line: ",lineno)
+        print("Variable name cannot be an , Error in line: ",lineno+1)
     elif var_name in REG_Names.keys():
-        print("Variable name cannot be a register, Error in line:", lineno)
+        print("Variable name cannot be a register, Error in line:", lineno+1)
     elif var_name in mem_address.keys():
-        print("Variable name cannot be a label, Error in line:", lineno)
-
+        print("Variable name cannot be a label, Error in line:", lineno+1)
+    elif var_name in variables.keys():
+      print("Cannot redefine variables, Error in line:", lineno+1)
+   
 def check_label_name(label_name, lineno):
     #must be alphanumeric
     #must not be an instruction, register, variable
     if (not(label_name.isalnum())):
-        print("Label name must be alphanumeric, Error in line:", lineno)
+        print("Label name must be alphanumeric, Error in line:", lineno+1)
     elif label_name in OPCODES.keys():
-        print("Label name cannot be an , Error in line: ",lineno)
+        print("Label name cannot be an , Error in line: ",lineno+1)
     elif label_name in REG_Names.keys():
-        print("Label name cannot be a register, Error in line:", lineno)
+        print("Label name cannot be a register, Error in line:", lineno+1)
     elif label_name in variables.keys():
-        print("Label name cannot be a variable, Error in line:",lineno)
+        print("Label name cannot be a variable, Error in line:",lineno+1)
+    elif label_name in mem_address.keys():
+      print("Cannot redefine labels, Error in line:", lineno+1)
         
         
 REG_Names = {
@@ -151,7 +155,7 @@ def typeA(ins):
                   exit()
             else:
               print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
-              exit())
+              exit()
     else:
       print("Invalid Instruction Length")
       exit()
@@ -200,6 +204,9 @@ def typeB(ins):
               else:
                 print("Invalid use of flags in line "+str(pc+1))
                 exit()
+            else:
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit()
 
             if int(ins[2][1:])<float(ins[2][1:]):
               print("Float value entered.")
@@ -226,6 +233,9 @@ def typeB(ins):
               else:
                 print("Invalid use of flags in line "+str(pc+1))
                 exit()
+            else:
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit()
             
             if int(ins[2][1:])<float(ins[2][1:]):
               print("Float value entered.")
@@ -257,6 +267,9 @@ def typeC(ins):
                 else:
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
+            else:
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit()
         
         if ins[0]=="div":
             s = "10111" + 5*"0"
@@ -266,6 +279,9 @@ def typeC(ins):
                 else:
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
+            else:
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit()
 
         if ins[0]=="not":
             s= "11101"+ 5*"0"
@@ -275,6 +291,9 @@ def typeC(ins):
                 else:
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
+            else:
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit()
 
         if ins[0]=="cmp":
             s= "11110"+ 5*"0"
@@ -284,6 +303,9 @@ def typeC(ins):
                 else:
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
+            else:
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit()
     else:
       print("Invalid Instruction Length")
       exit()
@@ -302,6 +324,7 @@ def typeD(ins):
                     s+=variables[mem]
                 else:
                   print("Memory Address not found")
+                  exit()
               else:
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
@@ -321,6 +344,9 @@ def typeD(ins):
               else:
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
+            else:
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit()
     else:
       print("Invalid Instruction Length")
       exit()
@@ -405,9 +431,7 @@ flag = 0
 varError = 0
 output = []
 
-#hlt not included     
-if "hlt" not in data:
-    print("Halt has not been mentioned")
+
 
 #hlt not last instruction
 for j in range(len(data)-1,-1):
@@ -436,11 +460,12 @@ elif(hlt_no==0):
 
     
 
-
+flag=0
 for i in data:
-    if(i[0]=="var" and flag==0):
+  
+    if(i[0:3]=="var" and flag==0):
         k+=1
-    elif(i[0]=="var" and flag==1):
+    elif(i[0:3]=="var" and flag==1):
         varError=1
     else:
         flag=1
@@ -493,6 +518,7 @@ else:
 #immediate value more than 8 bits
 if REG[-1][0]==1:
     print("Illegal Immediate value")
+
 
 
 
