@@ -13,9 +13,7 @@ REG_Names = {
 
 mem_address={}
 
-variables = {
-    "xyz":"00001000"
-}
+variables = {}
 
 REG = [0,0,0,0,0,0,0,[0,0,0,0]] #in the flag list [V (overflow), L, G, E]
 OPCODES = {
@@ -308,7 +306,6 @@ if(varError!=1):
         errorType="INVALID INSTRUCTION"
       pc+=1
       
-g = open("output.txt","w")
-
-for i in output:
-  print(i)
+with open("output.txt", "w") as txt_file:
+    for line in output:
+        txt_file.write("".join(line) + "\n")
