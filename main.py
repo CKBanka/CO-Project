@@ -93,6 +93,9 @@ def typeA(ins):
                 else:
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
+            else:
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit()
         
         if ins[0] == "mul":
 
@@ -105,7 +108,7 @@ def typeA(ins):
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
             else:
-              print("UNKNOWN REGISTER IDENTIFIED")
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
               exit()
         
         if ins[0] == "xor":
@@ -119,7 +122,7 @@ def typeA(ins):
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
             else:
-              print("UNKNOWN REGISTER IDENTIFIED")
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
               exit()
         
         if ins[0] == "or":
@@ -133,7 +136,7 @@ def typeA(ins):
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
             else:
-              print("UNKNOWN REGISTER IDENTIFIED")
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
               exit()
         
         if ins[0] == "and":
@@ -147,8 +150,8 @@ def typeA(ins):
                   print("Invalid use of flags in line "+str(pc+1))
                   exit()
             else:
-              print("UNKNOWN REGISTER IDENTIFIED")
-              exit()
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit())
     else:
       print("Invalid Instruction Length")
       exit()
@@ -166,8 +169,11 @@ def typeB(ins):
               if ins[1] != "FLAGS":
                 s+= REG_Names[ins[1]]
               else:
-                print("Invalid use of flags.")
+                print("Invalid use of flags in line "+str(pc+1))
                 exit()
+            else:
+              print("UNKNOWN REGISTER IDENTIFIED IN LINE "+str(pc+1))
+              exit()
             
             if int(ins[2][1:])<float(ins[2][1:]):
               print("Float value entered.")
@@ -297,7 +303,7 @@ def typeD(ins):
                 else:
                   print("Memory Address not found")
               else:
-                  print("Invalid use of flags.")
+                  print("Invalid use of flags in line "+str(pc+1))
                   exit()
             else:
               print("UNKNOWN REGISTER IDENTIFIED")
@@ -313,7 +319,7 @@ def typeD(ins):
                     s+= REG_Names[ins[1]]
                     s+=variables[mem]
               else:
-                  print("Invalid use of flags.")
+                  print("Invalid use of flags in line "+str(pc+1))
                   exit()
     else:
       print("Invalid Instruction Length")
@@ -388,7 +394,7 @@ def ins_type(ins):
     elif(OPCODES[ins[0]][1]=="F"):
         typeF(ins)
     else:
-      print("INVALID INSTRUCTION")
+      print("INVALID INSTRUCTION IN LINE"+str(pc+1))
       exit()
 
 f=open("input.txt",'r')
@@ -404,17 +410,30 @@ if "hlt" not in data:
     print("Halt has not been mentioned")
 
 #hlt not last instruction
-if data[-1]!="hlt":
-    print("Halt is not the last instruction, Error in line", data.index("hlt"))
+for j in range(len(data)-1,-1):
+  if(j!=[]):
+    if j!="hlt":
+      print("Halt is not the last instruction, Error in line", data.index("hlt"))
+      exit()
+    
+
 
 #multiple halt statements 
-if "hlt"in data[-2::-1]:
-  print("Multiple halt statements ")
-
-
+hlt_no=0
 for i in data:
-  if (i[0]=="var"):
-    check_variable_name(i[1],pc+1)
+  if("hlt" in i):
+    hlt_no+=1
+if(hlt_no>1):
+  print("MULTIPLE HLT DETECTED")
+  exit()
+elif(hlt_no==0):
+  print("NO HLT INSTRUCTION DETECTED")
+  exit()
+  
+
+
+
+
     
 
 
@@ -454,6 +473,13 @@ if(varError!=1):
           check_variable_name(j[1],pc)
           variables[j[1]]=s1
           k+=1
+      elif i[0][-1]==":":
+        check_label_name(i[1],pc)
+
+
+
+
+      
       else:
         errorType="INVALID INSTRUCTION"
         print(errorType)
@@ -468,6 +494,8 @@ else:
 if REG[-1][0]==1:
     print("Illegal Immediate value")
 
+
+
      
 
 
@@ -478,5 +506,5 @@ with open("output.txt", "w") as txt_file:
 
 
 
-    
 
+    

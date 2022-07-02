@@ -39,13 +39,21 @@ if "hlt" not in data:
 #hlt not last instruction
 if data[-1]!="hlt":
     print("Halt is not the last instruction, Error in line", index("hlt"))
+
+#multiple halt statements 
+if "hlt"in data[-2::-1]:
+  print("Multiple halt statements ")
     
 #variables not mentioned in beginning
 if varError=1:
     print("Variables not mentioned in the beginning")
-    
+
+#immediate value more than 8 bits
 if REG[-1][0]==1:
     print("Illegal Immediate value")
+  
+
+  
     
 
 
