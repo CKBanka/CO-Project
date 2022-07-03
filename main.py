@@ -518,6 +518,7 @@ else:
 #immediate value more than 8 bits
 if REG[-1][0]==1:
     print("Illegal Immediate value")
+    exit()
 
 
 
