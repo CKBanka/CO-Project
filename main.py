@@ -1,3 +1,5 @@
+import sys
+
 pc = 0
 
 def check_variable_name(var_name, lineno):
@@ -6,7 +8,7 @@ def check_variable_name(var_name, lineno):
     if (not(var_name.isalnum())):
         print("Variable name must be alphanumeric, Error in line:", lineno+1)
     elif var_name in OPCODES.keys():
-        print("Variable name cannot be an , Error in line: ",lineno+1)
+        print("Variable name cannot be an opcode, Error in line: ",lineno+1)
     elif var_name in REG_Names.keys():
         print("Variable name cannot be a register, Error in line:", lineno+1)
     elif var_name in mem_address.keys():
@@ -20,7 +22,7 @@ def check_label_name(label_name, lineno):
     if (not(label_name.isalnum())):
         print("Label name must be alphanumeric, Error in line:", lineno+1)
     elif label_name in OPCODES.keys():
-        print("Label name cannot be an , Error in line: ",lineno+1)
+        print("Label name cannot be an opcode , Error in line: ",lineno+1)
     elif label_name in REG_Names.keys():
         print("Label name cannot be a register, Error in line:", lineno+1)
     elif label_name in variables.keys():
@@ -423,8 +425,16 @@ def ins_type(ins):
       print("INVALID INSTRUCTION IN LINE"+str(pc+1))
       exit()
 
-f=open("input.txt",'r')
-data=f.readlines()
+data=[]
+while(True):
+    try:
+        curr_instr = input()
+        data.append(curr_instr)
+    except EOFError:
+        break
+# f=open("input.txt",'r')
+# for i in f:
+  # data.append(i)
 l=len(data)
 k=0
 flag = 0
@@ -525,13 +535,17 @@ if REG[-1][0]==1:
 
      
 
+for i in output:
+    print(i)
 
+exit()
 
-with open("output.txt", "w") as txt_file:
-    for line in output:
-        txt_file.write("".join(line) + "\n")
+# with open("output.txt", "w") as txt_file:
+#     for line in output:
+#         txt_file.write("".join(line) + "\n")
 
 
 
 
     
+
